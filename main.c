@@ -42,6 +42,16 @@ void insert(hashTable * ht,const char* key,int value){
     ht->table[index] = newNode;
 }
 
+int search(hashTable * ht, const char * key){
+    unsigned int index = hashFunction(key);
+    node * currentNode = ht->table[index];
+    while (currentNode){
+        if(strcmp(currentNode->key,key) == 0){
+            return currentNode->value;
+        }
+        currentNode = currentNode->next;
+    }
+}
 
 void printHashTable(hashTable * ht){
     for (int i = 0; i < TABLE_SIZE; i++) {
@@ -53,6 +63,18 @@ void printHashTable(hashTable * ht){
             cur = cur->next;
         }
         printf("\n");
+    }
+}
+
+void freeHashTable(hashTable* ht){
+    for (int i = 0; i < TABLE_SIZE; i++) {
+        node* current = ht->table[i];
+        while (current){
+            node* next = current->next;
+            free(current->key);
+            free(current);
+            current = next;
+        }
     }
 }
 
